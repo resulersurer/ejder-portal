@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Portal } from '@/types/portal';
-import { getIconClass } from '@/lib/utils';
+import { getIconClass, getPortalIcon } from '@/lib/utils';
 
 interface PortalCardProps {
   portal: Portal;
@@ -19,64 +19,6 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
     restricted: 'cbg-r',
   }[portalType] || 'cbg-p';
 
-  const renderIcon = () => {
-    const name = portal.name.toLowerCase();
-    const code = portal.code.toUpperCase();
-
-    // Icon rendering based on portal type
-    if (
-      name.includes('analytic') ||
-      code === 'ZANL'
-    ) {
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <line x1="18" y1="20" x2="18" y2="10" />
-          <line x1="12" y1="20" x2="12" y2="4" />
-          <line x1="6" y1="20" x2="6" y2="14" />
-          <path d="M2 20h20" />
-        </svg>
-      );
-    }
-    
-    if (name.includes('crm') || code === 'ZCRM') {
-      return (
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
-        </svg>
-      );
-    }
-
-    // Default icon
-    return (
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        <rect x="3" y="3" width="18" height="18" rx="2" />
-        <path d="M9 3v18M15 3v18M3 9h18M3 15h18" />
-      </svg>
-    );
-  };
-
   const PeopleSvg = (
     <svg
       viewBox="0 0 24 24"
@@ -84,6 +26,7 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
       stroke="currentColor"
       strokeWidth="1.8"
       strokeLinecap="round"
+      style={{ width: '11px', height: '11px' }}
     >
       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
       <circle cx="9" cy="7" r="4" />
@@ -98,6 +41,7 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
       stroke="currentColor"
       strokeWidth="1.8"
       strokeLinecap="round"
+      style={{ width: '11px', height: '11px' }}
     >
       <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
       <circle cx="12" cy="7" r="4" />
@@ -190,7 +134,9 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
     return (
       <div className="card ac">
         <div className="ctop">
-          <div className={`ci ${iconClass}`}>{renderIcon()}</div>
+          <div className={`ci ${iconClass}`} style={{ fontSize: '20px' }}>
+            {getPortalIcon(portal)}
+          </div>
           <span className={`cbg ${badgeClass}`}>{portal.portalType}</span>
         </div>
         <div className="cb">
@@ -208,16 +154,46 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
       className="card"
       target="_blank"
       rel="noopener noreferrer"
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        height: '100%',
+      }}
     >
-      <div className="ctop">
-        <div className={`ci ${iconClass}`}>{renderIcon()}</div>
-        <span className={`cbg ${badgeClass}`}>{portal.portalType}</span>
+      <div>
+        <div className="ctop">
+          <div className={`ci ${iconClass}`} style={{ fontSize: '20px' }}>
+            {getPortalIcon(portal)}
+          </div>
+          <span className={`cbg ${badgeClass}`}>{portal.portalType}</span>
+        </div>
+        <div className="cb">
+          <div className="ct">{portal.name}</div>
+          <div className="cu">{portal.url.replace('https://', '')}</div>
+          {portal.about && (
+            <p
+              className="cdesc"
+              style={{
+                fontSize: '11px',
+                color: 'var(--t2)',
+                marginTop: '8px',
+                marginBottom: '4px',
+                display: '-webkit-box',
+                WebkitLineClamp: 2,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+                height: '32px',
+                lineHeight: '1.45',
+              }}
+            >
+              {portal.about}
+            </p>
+          )}
+        </div>
       </div>
-      <div className="cb">
-        <div className="ct">{portal.name}</div>
-        <div className="cu">{portal.url.replace('https://', '')}</div>
-      </div>
-      <div className="cfoot">
+      <div className="cfoot" style={{ marginTop: '12px' }}>
         <span className="cm">
           {PeopleSvg}
           {portal.teams.length} ekip
