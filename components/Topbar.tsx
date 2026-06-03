@@ -34,6 +34,7 @@ function getWeatherEmoji(desc: string): string {
 const Topbar: React.FC<TopbarProps> = ({ onMenuClick, modeLabel }) => {
   const [greeting, setGreeting] = useState('');
   const [time, setTime] = useState('');
+  const [date, setDate] = useState('');
   const [weather, setWeather] = useState<WeatherData | null>(null);
 
   // Live clock + greeting — ticks every second
@@ -45,6 +46,14 @@ const Topbar: React.FC<TopbarProps> = ({ onMenuClick, modeLabel }) => {
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
+        })
+      );
+      setDate(
+        now.toLocaleDateString('tr-TR', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
         })
       );
       setGreeting(getGreeting());
@@ -117,7 +126,7 @@ const Topbar: React.FC<TopbarProps> = ({ onMenuClick, modeLabel }) => {
           </div>
         )}
 
-        {/* Clock widget */}
+        {/* Clock + Date widget */}
         {time && (
           <div className="tb-clock-pill">
             <svg
@@ -132,7 +141,10 @@ const Topbar: React.FC<TopbarProps> = ({ onMenuClick, modeLabel }) => {
               <circle cx="12" cy="12" r="10" />
               <polyline points="12 6 12 12 16 14" />
             </svg>
-            <span className="tb-clock-time">{time}</span>
+            <div className="tb-clock-info">
+              <span className="tb-clock-time">{time}</span>
+              {date && <span className="tb-clock-date">{date}</span>}
+            </div>
           </div>
         )}
 
