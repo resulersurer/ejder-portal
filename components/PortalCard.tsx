@@ -132,17 +132,19 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
     );
 
     return (
-      <div className="card ac">
-        <div className="ctop">
-          <div className={`ci ${iconClass}`} style={{ fontSize: '20px' }}>
-            {getPortalIcon(portal)}
+      <div className="card ac" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div>
+          <div className="ctop">
+            <div className={`ci ${iconClass}`} style={{ fontSize: '20px' }}>
+              {getPortalIcon(portal)}
+            </div>
+            <span className={`cbg ${badgeClass}`}>{portal.portalType}</span>
           </div>
-          <span className={`cbg ${badgeClass}`}>{portal.portalType}</span>
+          <div className="cb">
+            <div className="ct">{portal.name}</div>
+          </div>
+          {portal.about?.trim() && <div className="cdesc">{portal.about}</div>}
         </div>
-        <div className="cb">
-          <div className="ct">{portal.name}</div>
-        </div>
-        <div className="cdesc">{portal.about || ''}</div>
         {pdfBtn}
       </div>
     );

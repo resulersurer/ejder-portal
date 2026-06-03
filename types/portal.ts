@@ -18,7 +18,7 @@ export interface Website {
   about: string;
 }
 
-export type ViewMode = 'apps' | 'about' | 'websites' | 'admin';
+export type ViewMode = 'apps' | 'websites' | 'admin';
 
 export interface AppState {
   portals: Portal[];

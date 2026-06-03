@@ -52,12 +52,23 @@ export default function PortalClient({
     setTeams(initialTeams);
   }, [initialTeams]);
 
-  // Check authentication status in session storage on mount
+  // Check authentication status in session storage and parse query parameters on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const auth = sessionStorage.getItem(SESSION_AUTH);
       if (auth === '1') {
         setIsAuthenticated(true);
+      }
+
+      // Parse query parameters
+      const params = new URLSearchParams(window.location.search);
+      const viewParam = params.get('view');
+      const teamParam = params.get('team');
+      if (viewParam === 'websites') {
+        setCurrentView('websites');
+      } else if (teamParam) {
+        setCurrentFilter(teamParam);
+        setCurrentView('apps');
       }
     }
   }, []);
@@ -76,24 +87,6 @@ export default function PortalClient({
 
   const handleSearch = (term: string) => {
     setSearchTerm(term.toLowerCase().trim());
-  };
-
-  const handleAdminLogin = () => {
-    if (adminPassword === ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      sessionStorage.setItem(SESSION_AUTH, '1');
-      setAdminPassword('');
-      showToast('Admin paneline hoş geldiniz', 'success');
-    } else {
-      showToast('Hatalı şifre. Tekrar deneyin.', 'error');
-    }
-  };
-
-  const handleAdminLogout = () => {
-    setIsAuthenticated(false);
-    sessionStorage.removeItem(SESSION_AUTH);
-    setCurrentView('apps');
-    showToast('Çıkış yapıldı', 'success');
   };
 
   const handleOpenPdf = (portalId: string) => {
@@ -126,21 +119,18 @@ export default function PortalClient({
 
   const viewLabels = {
     apps: 'Uygulamalar',
-    about: 'Hakkında',
     websites: 'Web Siteleri',
     admin: 'Admin Paneli',
   };
 
   const viewTitles = {
     apps: 'Uygulamalar',
-    about: 'Portal Bilgileri',
     websites: 'Web Siteleri',
     admin: 'Admin Paneli',
   };
 
   const viewSubs = {
     apps: 'Tüm sistemlerinize tek noktadan erişin',
-    about: 'Her portal hakkında detaylı bilgi',
     websites: 'Kurumsal web sitelerimiz',
     admin: 'Portal, web sitesi ve ekipleri yönetin',
   };
@@ -162,94 +152,42 @@ export default function PortalClient({
 
         {/* Main Content Area */}
         <main className="main">
-          {/* Admin Login Overlay */}
-          {!isAuthenticated && currentView === 'admin' && (
-            <div
-              className={`alov ${currentView === 'admin' && !isAuthenticated ? 'open' : ''}`}
-              id="adminLoginOverlay"
-            >
-              <div className="albox">
-                <div className="alic">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                  >
-                    <rect x="3" y="11" width="18" height="11" rx="2" />
-                    <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                  </svg>
-                </div>
-                <div className="alt">Admin Girişi</div>
-                <div className="als">Yönetim paneline erişmek için şifreyi girin</div>
-                <div className="fg">
-                  <label className="fl">Şifre</label>
-                  <input
-                    type="password"
-                    className="fi"
-                    placeholder="Şifreyi girin…"
-                    value={adminPassword}
-                    onChange={(e) => setAdminPassword(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleAdminLogin()}
-                  />
-                </div>
-                <button className="btn btn-p btn-full" onClick={handleAdminLogin} style={{ marginTop: '10px' }}>
-                  Giriş Yap
-                </button>
-                <button
-                  className="btn btn-s btn-full"
-                  onClick={() => {
-                    handleViewChange('apps');
-                  }}
-                  style={{ marginTop: '7px' }}
-                >
-                  İptal
-                </button>
-              </div>
-            </div>
-          )}
-
           {/* Overview Section */}
-          {['apps', 'about', 'websites'].includes(currentView) && (
+          {['apps', 'websites'].includes(currentView) && (
             <div className="ov">
               <div>
                 <div className="ov-title">{viewTitles[currentView]}</div>
                 <div className="ov-sub">{viewSubs[currentView]}</div>
               </div>
-              {currentView !== 'admin' && (
-                <div className="ov-stats">
-                  <div className="ostat">
-                    <span className="ostat-v">{currentView === 'websites' ? websites.length : filteredPortals.length}</span>
-                    <span className="ostat-l">{currentView === 'websites' ? 'Site' : 'Sistem'}</span>
-                  </div>
-                  <div className="ostat">
-                    <span className="ostat-v">{teams.length}</span>
-                    <span className="ostat-l">Ekip</span>
-                  </div>
-                  <div className="ostat">
-                    <span className="ostat-v">
-                      {currentView === 'websites'
-                        ? websites.length
-                        : filteredPortals.filter((p) => (p.users || 0) > 0).length}
-                    </span>
-                    <span className="ostat-l">Aktif</span>
-                  </div>
+              <div className="ov-stats">
+                <div className="ostat">
+                  <span className="ostat-v">{currentView === 'websites' ? websites.length : filteredPortals.length}</span>
+                  <span className="ostat-l">{currentView === 'websites' ? 'Site' : 'Sistem'}</span>
                 </div>
-              )}
+                <div className="ostat">
+                  <span className="ostat-v">{teams.length}</span>
+                  <span className="ostat-l">Ekip</span>
+                </div>
+                <div className="ostat">
+                  <span className="ostat-v">
+                    {currentView === 'websites'
+                      ? websites.length
+                      : filteredPortals.filter((p) => (p.users || 0) > 0).length}
+                  </span>
+                  <span className="ostat-l">Aktif</span>
+                </div>
+              </div>
             </div>
           )}
 
           {/* Search Dock */}
-          <SearchDock visible={['apps', 'about'].includes(currentView)} onSearch={handleSearch} />
+          <SearchDock visible={currentView === 'apps'} onSearch={handleSearch} />
 
-          {/* Apps/About View */}
-          {['apps', 'about'].includes(currentView) && (
+          {/* Apps View */}
+          {currentView === 'apps' && (
             <div id="appsView">
               <div className="shd">
-                <div className="shd-t">
-                  {currentView === 'about' ? 'Portal Bilgileri' : 'Tüm Uygulamalar'}
-                </div>
+                <div className="shd-t">Tüm Uygulamalar</div>
                 <div className="shd-l" />
                 <div className="shd-b">{filteredPortals.length} portal</div>
               </div>
@@ -261,11 +199,14 @@ export default function PortalClient({
                         key={portal.id}
                         style={{
                           animationDelay: `${index * 30}ms`,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          height: '100%',
                         }}
                       >
                         <PortalCard
                           portal={portal}
-                          isAbout={currentView === 'about'}
+                          isAbout={false}
                           onOpenPdf={handleOpenPdf}
                         />
                       </div>
@@ -328,18 +269,6 @@ export default function PortalClient({
                 )}
               </div>
             </div>
-          )}
-
-          {/* Admin View */}
-          {currentView === 'admin' && (
-            <AdminPanel
-              portals={portals}
-              websites={websites}
-              teams={teams}
-              isAuthenticated={isAuthenticated}
-              onLogout={handleAdminLogout}
-              onUpdate={handleUpdate}
-            />
           )}
         </main>
       </div>
