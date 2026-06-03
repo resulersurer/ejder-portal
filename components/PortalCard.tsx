@@ -12,13 +12,7 @@ interface PortalCardProps {
 }
 
 const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpenPdf }) => {
-  const portalType = portal.portalType.toLowerCase();
   const iconClass = getIconClass(portal);
-  const badgeClass = {
-    private: 'cbg-p',
-    public: 'cbg-u',
-    restricted: 'cbg-r',
-  }[portalType] || 'cbg-p';
 
   const PeopleSvg = (
     <svg
@@ -139,7 +133,6 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
             <MagneticIcon className={`ci ${iconClass}`}>
               {getPortalIcon(portal)}
             </MagneticIcon>
-            <span className={`cbg ${badgeClass}`}>{portal.portalType}</span>
           </div>
           <div className="cb">
             <div className="ct">{portal.name}</div>
@@ -155,6 +148,7 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
     <a
       href={portal.url}
       className="card"
+      data-accent={iconClass}
       target="_blank"
       rel="noopener noreferrer"
     >
@@ -163,7 +157,6 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
           <MagneticIcon className={`ci ${iconClass}`}>
             {getPortalIcon(portal)}
           </MagneticIcon>
-          <span className={`cbg ${badgeClass}`}>{portal.portalType}</span>
         </div>
         <div className="cb">
           <div className="ct">{portal.name}</div>

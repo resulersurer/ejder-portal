@@ -29,6 +29,7 @@ const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
     <a
       href={website.url}
       className="card"
+      data-accent="c-emerald"
       target="_blank"
       rel="noopener noreferrer"
     >
