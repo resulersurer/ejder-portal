@@ -244,7 +244,7 @@ export default function PortalClient({
               </div>
               <div className="gw">
                 {websites.length > 0 ? (
-                  <div className="wg">
+                  <div className="ag">
                     {websites.map((website) => (
                       <WebsiteCard key={website.id} website={website} />
                     ))}
