@@ -67,18 +67,15 @@ const Topbar: React.FC<TopbarProps> = ({ onMenuClick, modeLabel }) => {
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const res = await fetch('https://wttr.in/?format=j1', {
+        const res = await fetch('https://wttr.in/Kagithane,Istanbul?format=j1', {
           next: { revalidate: 900 },
         } as RequestInit);
         if (!res.ok) return;
         const data = await res.json();
         const current = data.current_condition?.[0];
-        const area = data.nearest_area?.[0];
-        const city =
-          area?.areaName?.[0]?.value || area?.region?.[0]?.value || '';
         const tempC = current?.temp_C ?? '--';
         const desc = current?.weatherDesc?.[0]?.value ?? '';
-        setWeather({ temp: tempC, desc, icon: getWeatherEmoji(desc), city });
+        setWeather({ temp: tempC, desc, icon: getWeatherEmoji(desc), city: 'Kağıthane' });
       } catch {
         // silently fail — weather is optional
       }
