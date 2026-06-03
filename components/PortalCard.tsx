@@ -132,10 +132,10 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
     );
 
     return (
-      <div className="card ac" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+      <div className="card ac">
         <div>
           <div className="ctop">
-            <div className={`ci ${iconClass}`} style={{ fontSize: '20px' }}>
+            <div className={`ci ${iconClass}`}>
               {getPortalIcon(portal)}
             </div>
             <span className={`cbg ${badgeClass}`}>{portal.portalType}</span>
@@ -156,16 +156,10 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
       className="card"
       target="_blank"
       rel="noopener noreferrer"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        height: '100%',
-      }}
     >
       <div>
         <div className="ctop">
-          <div className={`ci ${iconClass}`} style={{ fontSize: '20px' }}>
+          <div className={`ci ${iconClass}`}>
             {getPortalIcon(portal)}
           </div>
           <span className={`cbg ${badgeClass}`}>{portal.portalType}</span>
@@ -175,7 +169,7 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
           <div className="cu">{portal.url.replace('https://', '')}</div>
         </div>
       </div>
-      <div className="cfoot" style={{ marginTop: '12px' }}>
+      <div className="cfoot">
         <span className="cm">
           {PeopleSvg}
           {portal.teams.length} ekip

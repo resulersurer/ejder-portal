@@ -29,12 +29,6 @@ const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
       className="card"
       target="_blank"
       rel="noopener noreferrer"
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        height: '100%',
-      }}
     >
       <div>
         <div className="ctop">
