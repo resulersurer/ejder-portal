@@ -13,6 +13,7 @@ interface SidebarProps {
 
 const Sidebar: React.FC<SidebarProps> = ({ activeView, onViewChange, onTeamFilter, teams }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [logoFailed, setLogoFailed] = useState(false);
 
   const handleViewClick = (view: ViewMode) => {
     onViewChange(view);
@@ -37,16 +38,15 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, onViewChange, onTeamFilte
       <aside className={`rail ${isOpen ? 'open' : ''}`}>
         <div className="rail-top">
           <div className="rlogo">
-            <img
-              src="/assets/img/logo.png"
-              alt="E"
-              onError={(e) => {
-                const img = e.target as HTMLImageElement;
-                img.style.display = 'none';
-                (img.parentElement as HTMLElement).innerHTML =
-                  '<span class="rlogo-fb">E</span>';
-              }}
-            />
+            {logoFailed ? (
+              <span className="rlogo-fb">E</span>
+            ) : (
+              <img
+                src="/assets/img/logo.png"
+                alt="E"
+                onError={() => setLogoFailed(true)}
+              />
+            )}
           </div>
           <div className="rb">
             <div className="rb-n">Ejder Turizm</div>
