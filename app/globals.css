@@ -2229,4 +2229,105 @@ tr:hover td {
 }
 
 
+/* ==========================================
+   TOPBAR — CLOCK & WEATHER WIDGETS
+   ========================================== */
 
+/* Weather pill */
+.tb-weather-pill {
+  display: none;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--s2);
+  border: 1px solid var(--l1);
+  transition: background var(--d) var(--ease), border-color var(--d) var(--ease);
+  cursor: default;
+  user-select: none;
+}
+
+@media (min-width: 640px) {
+  .tb-weather-pill {
+    display: flex;
+  }
+}
+
+.tb-weather-pill:hover {
+  background: var(--s3);
+  border-color: var(--l2);
+}
+
+.tb-w-icon {
+  font-size: 16px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.tb-w-info {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.tb-w-temp {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: -0.02em;
+}
+
+.tb-w-city {
+  font-size: 9.5px;
+  font-weight: 500;
+  color: var(--t3);
+  white-space: nowrap;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Clock pill */
+.tb-clock-pill {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--s2);
+  border: 1px solid var(--l1);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--t1);
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+  font-family: 'SF Mono', 'Fira Mono', 'Cascadia Code', monospace, inherit;
+}
+
+@media (min-width: 480px) {
+  .tb-clock-pill {
+    display: flex;
+  }
+}
+
+.tb-clock-svg {
+  width: 13px;
+  height: 13px;
+  color: var(--brand);
+  flex-shrink: 0;
+}
+
+.tb-clock-time {
+  letter-spacing: 0.04em;
+}
+
+@media (prefers-color-scheme: dark) {
+  .tb-weather-pill,
+  .tb-clock-pill {
+    background: var(--s2);
+    border-color: var(--l1);
+  }
+}
