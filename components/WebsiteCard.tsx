@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { Website } from '@/types/portal';
+import { MagneticIcon } from './MagneticIcon';
 
 interface WebsiteCardProps {
   website: Website;
@@ -16,6 +17,7 @@ const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
       strokeWidth="1.8"
       strokeLinecap="round"
       strokeLinejoin="round"
+      className="svg-globe"
     >
       <circle cx="12" cy="12" r="10" />
       <line x1="2" y1="12" x2="22" y2="12" />
@@ -32,7 +34,7 @@ const WebsiteCard: React.FC<WebsiteCardProps> = ({ website }) => {
     >
       <div>
         <div className="ctop">
-          <div className="ci c-emerald">{WebIcon}</div>
+          <MagneticIcon className="ci c-emerald">{WebIcon}</MagneticIcon>
         </div>
         <div className="cb">
           <div className="ct">{website.name}</div>

@@ -3,6 +3,7 @@
 import React from 'react';
 import { Portal } from '@/types/portal';
 import { getIconClass, getPortalIcon } from '@/lib/utils';
+import { MagneticIcon } from './MagneticIcon';
 
 interface PortalCardProps {
   portal: Portal;
@@ -135,9 +136,9 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
       <div className="card ac">
         <div>
           <div className="ctop">
-            <div className={`ci ${iconClass}`}>
+            <MagneticIcon className={`ci ${iconClass}`}>
               {getPortalIcon(portal)}
-            </div>
+            </MagneticIcon>
             <span className={`cbg ${badgeClass}`}>{portal.portalType}</span>
           </div>
           <div className="cb">
@@ -159,9 +160,9 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
     >
       <div>
         <div className="ctop">
-          <div className={`ci ${iconClass}`}>
+          <MagneticIcon className={`ci ${iconClass}`}>
             {getPortalIcon(portal)}
-          </div>
+          </MagneticIcon>
           <span className={`cbg ${badgeClass}`}>{portal.portalType}</span>
         </div>
         <div className="cb">

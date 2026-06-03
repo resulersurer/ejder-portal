@@ -1948,4 +1948,285 @@ tr:hover td {
   border-color: var(--brand);
 }
 
+/* ==========================================
+   MICRO-ANIMATIONS FOR PORTAL/WEBSITE ICONS
+   ========================================== */
+
+/* 1. Bar Chart Animations (Analytics, SalesIQ, vb.) */
+.svg-bar-1, .svg-bar-2, .svg-bar-3 {
+  transform-origin: bottom;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.card:hover .svg-bar-1, .ri:hover .svg-bar-1 {
+  transform: scaleY(1.3);
+}
+.card:hover .svg-bar-2, .ri:hover .svg-bar-2 {
+  transform: scaleY(1.5);
+  transition-delay: 0.05s;
+}
+.card:hover .svg-bar-3, .ri:hover .svg-bar-3 {
+  transform: scaleY(1.2);
+  transition-delay: 0.1s;
+}
+
+/* 2. User Silhouette Animations (CRM, Personel, HR) */
+.svg-user-head, .svg-users-head {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.card:hover .svg-user-head, .ri:hover .svg-user-head,
+.card:hover .svg-users-head, .ri:hover .svg-users-head {
+  transform: translateY(-2px);
+}
+.svg-users-shadow-head {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.card:hover .svg-users-shadow-head, .ri:hover .svg-users-shadow-head {
+  transform: translate(1px, -1px);
+}
+
+/* 3. Envelope Flap Animations (Mail, E-posta) */
+.svg-envelope-flap {
+  transition: transform 0.3s var(--ease);
+  transform-origin: top;
+}
+.card:hover .svg-envelope-flap, .ri:hover .svg-envelope-flap {
+  transform: scaleY(-0.8) translateY(2px);
+}
+
+/* 4. Folder Animations (Drive, Workdrive, Dosya) */
+.svg-folder {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: bottom left;
+}
+.card:hover .svg-folder, .ri:hover .svg-folder {
+  transform: rotate(-4deg) scale(1.02);
+}
+
+/* 5. Loop & Flow Animations (Flow, Otomasyon) */
+.card:hover .svg-arrow-right, .ri:hover .svg-arrow-right {
+  animation: flowRight 0.8s var(--ease) infinite;
+}
+.card:hover .svg-arrow-left, .ri:hover .svg-arrow-left {
+  animation: flowLeft 0.8s var(--ease) infinite;
+}
+@keyframes flowRight {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(3px); }
+}
+@keyframes flowLeft {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-3px); }
+}
+
+/* 6. Form/Document Animations (Form) */
+.svg-form-fold {
+  transition: transform 0.3s var(--ease);
+  transform-origin: top right;
+}
+.card:hover .svg-form-fold, .ri:hover .svg-form-fold {
+  transform: scale(1.2) translate(-1px, 1px);
+}
+.svg-form-line-1, .svg-form-line-2 {
+  transition: transform 0.4s var(--ease);
+  transform-origin: left;
+}
+.card:hover .svg-form-line-1, .ri:hover .svg-form-line-1 {
+  transform: scaleX(1.15);
+}
+.card:hover .svg-form-line-2, .ri:hover .svg-form-line-2 {
+  transform: scaleX(0.85);
+  transition-delay: 0.05s;
+}
+
+/* 7. Chat Bubble Animations (Chat, Cliq, Mesaj) */
+.card:hover .svg-chat-bubble, .ri:hover .svg-chat-bubble {
+  animation: chatBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes chatBounce {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.1) rotate(-3deg); }
+  60% { transform: scale(0.95) rotate(2deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+/* 8. Survey/Check Box Animations (Survey, Anket) */
+.svg-check-tick {
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  transition: stroke-dashoffset 0.4s var(--ease);
+}
+.card:hover .svg-check-tick, .ri:hover .svg-check-tick {
+  stroke-dashoffset: 0;
+}
+
+/* 9. Gear Animations (Admin, Creator) */
+.card:hover .svg-gear, .ri:hover .svg-gear {
+  animation: gearRotate 3s linear infinite;
+  transform-origin: 12px 12px;
+}
+@keyframes gearRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 10. Star Animations (VIP, Kapalı) */
+.card:hover .svg-star, .ri:hover .svg-star {
+  animation: starRotate 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) infinite alternate;
+  transform-origin: 12px 12px;
+}
+@keyframes starRotate {
+  0% { transform: scale(1) rotate(0deg); }
+  100% { transform: scale(1.18) rotate(25deg); }
+}
+
+/* 11. Plane Animations (Campaign, Kampanya) */
+.card:hover .svg-plane, .ri:hover .svg-plane {
+  animation: planeWiggle 1s var(--ease) infinite alternate;
+}
+@keyframes planeWiggle {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(2px, -2px); }
+}
+
+/* 12. Globe Animations (Website, Web siteleri) */
+.card:hover .svg-globe, .ri:hover .svg-globe {
+  animation: globeRotate 8s linear infinite;
+  transform-origin: 12px 12px;
+}
+@keyframes globeRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 13. Robot Head Animations (GPT, AI, Yapay Zeka) */
+.card:hover .svg-robot, .ri:hover .svg-robot {
+  animation: robotPulse 1.5s ease-in-out infinite alternate;
+}
+@keyframes robotPulse {
+  0% { opacity: 0.8; filter: drop-shadow(0 0 1px currentColor); }
+  100% { opacity: 1; filter: drop-shadow(0 0 4px currentColor); }
+}
+
+/* 14. Passport/Visa Animations (Pasaport, Vize) */
+.svg-passport-lines {
+  transition: transform 0.3s var(--ease);
+}
+.card:hover .svg-passport-lines, .ri:hover .svg-passport-lines {
+  transform: translateY(1px);
+}
+
+/* 15. Bell Animations (Duyuru, Kurumsal) */
+.card:hover .svg-bell, .ri:hover .svg-bell {
+  animation: bellRing 0.6s var(--ease) both;
+  transform-origin: top center;
+}
+@keyframes bellRing {
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(8deg); }
+  40% { transform: rotate(-6deg); }
+  60% { transform: rotate(4deg); }
+  80% { transform: rotate(-2deg); }
+}
+
+/* 16. Ticket Animations (Bilet) */
+.svg-ticket {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+.card:hover .svg-ticket, .ri:hover .svg-ticket {
+  transform: rotate(-6deg) scale(1.05);
+}
+
+/* 17. Academy Cap Animations (Akademi) */
+.svg-academy-cap {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+.card:hover .svg-academy-cap, .ri:hover .svg-academy-cap {
+  transform: translateY(-1px) rotate(-3deg);
+}
+
+/* 18. Shopping Cart Animations (Online Sales) */
+.card:hover .svg-cart-basket, .ri:hover .svg-cart-basket {
+  animation: cartShove 0.5s var(--ease) forwards;
+}
+.card:hover .svg-cart-wheel-1, .ri:hover .svg-cart-wheel-1,
+.card:hover .svg-cart-wheel-2, .ri:hover .svg-cart-wheel-2 {
+  animation: wheelSpin 0.5s var(--ease) forwards;
+  transform-origin: 9px 21px;
+}
+.card:hover .svg-cart-wheel-2, .ri:hover .svg-cart-wheel-2 {
+  transform-origin: 20px 21px;
+}
+@keyframes cartShove {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(1px) translateY(-1px); }
+  100% { transform: translateX(0); }
+}
+@keyframes wheelSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(180deg); }
+}
+
+/* 19. Phone Animations (Happy Call, Müşteri) */
+.card:hover .svg-phone, .ri:hover .svg-phone {
+  animation: phoneVibrate 0.4s var(--ease) both;
+}
+@keyframes phoneVibrate {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(4deg); }
+  75% { transform: rotate(-4deg); }
+}
+
+/* 20. Dollar Animations (Maliyet, Cost) */
+.svg-dollar {
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: center;
+}
+.card:hover .svg-dollar, .ri:hover .svg-dollar {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* 21. Bank Animations (Banka) */
+.svg-bank-roof {
+  transition: transform 0.3s var(--ease);
+}
+.card:hover .svg-bank-roof, .ri:hover .svg-bank-roof {
+  transform: translateY(-1px);
+}
+.card:hover .svg-bank-pillar-1, .ri:hover .svg-bank-pillar-1 {
+  animation: pillarPulse 0.4s var(--ease) forwards;
+}
+.card:hover .svg-bank-pillar-2, .ri:hover .svg-bank-pillar-2 {
+  animation: pillarPulse 0.4s var(--ease) 0.05s forwards;
+}
+.card:hover .svg-bank-pillar-3, .ri:hover .svg-bank-pillar-3 {
+  animation: pillarPulse 0.4s var(--ease) 0.1s forwards;
+}
+.card:hover .svg-bank-pillar-4, .ri:hover .svg-bank-pillar-4 {
+  animation: pillarPulse 0.4s var(--ease) 0.15s forwards;
+}
+@keyframes pillarPulse {
+  0%, 100% { transform: scaleY(1); transform-origin: bottom; }
+  50% { transform: scaleY(1.12); transform-origin: bottom; }
+}
+
+/* 22. Sidebar Menu Grid Animations (Uygulamalar Sidebar Item) */
+.svg-sidebar-grid rect {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.ri:hover .svg-sidebar-grid rect:nth-child(1) {
+  transform: translate(-1px, -1px);
+}
+.ri:hover .svg-sidebar-grid rect:nth-child(2) {
+  transform: translate(1px, -1px);
+}
+.ri:hover .svg-sidebar-grid rect:nth-child(3) {
+  transform: translate(-1px, 1px);
+}
+.ri:hover .svg-sidebar-grid rect:nth-child(4) {
+  transform: translate(1px, 1px);
+}
+
+
 
