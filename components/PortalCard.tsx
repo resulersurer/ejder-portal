@@ -173,26 +173,6 @@ const PortalCard: React.FC<PortalCardProps> = ({ portal, isAbout = false, onOpen
         <div className="cb">
           <div className="ct">{portal.name}</div>
           <div className="cu">{portal.url.replace('https://', '')}</div>
-          {portal.about && (
-            <p
-              className="cdesc"
-              style={{
-                fontSize: '11px',
-                color: 'var(--t2)',
-                marginTop: '8px',
-                marginBottom: '4px',
-                display: '-webkit-box',
-                WebkitLineClamp: 2,
-                WebkitBoxOrient: 'vertical',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                height: '32px',
-                lineHeight: '1.45',
-              }}
-            >
-              {portal.about}
-            </p>
-          )}
         </div>
       </div>
       <div className="cfoot" style={{ marginTop: '12px' }}>
