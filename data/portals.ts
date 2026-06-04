@@ -458,4 +458,14 @@ export const defaultPortals: Portal[] = [
     teams: ['OPERASYON EKİBİ', 'SATIŞ EKİBİ', 'REKLAM MEDYA EKİBİ'],
     about: 'Tur canlı konumlarını harita üzerinden takip etmek için kullanılır.',
   },
+  {
+    id: 'RetellAI',
+    code: 'RetellAI',
+    name: 'Retell AI',
+    url: 'https://www.retellai.com/',
+    portalType: 'Private',
+    users: 0,
+    teams: ['IT EKİBİ', 'SATIŞ EKİBİ', 'REKLAM MEDYA EKİBİ'],
+    about: 'Yapay zeka sesli asistan platformu.',
+  },
 ];
