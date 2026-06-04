@@ -12,6 +12,7 @@ export const defaultWebsites: Website[] = [
   { id: 'KT', code: 'KT', name: 'Küba Turu', url: 'https://ejderturizm.wixsite.com/kubatur', about: 'Küba turları tanıtım sitesi.' },
   { id: 'MV', code: 'MV', name: 'Meksika Vizesi', url: 'https://www.meksikavizesi.net/', about: 'Meksika vizesi bilgilendirme sitesi.' },
   { id: 'PBT', code: 'PBT', name: 'Peru Bolivya Turu', url: 'https://www.perubolivyaturu.com/', about: 'Peru ve Bolivya turları tanıtım sitesi.' },
+  { id: 'RetellAI', code: 'RetellAI', name: 'Retell AI', url: 'https://www.retellai.com/', about: 'Yapay zeka sesli asistan platformu.' },
   { id: 'SET', code: 'SET', name: 'Seyahat Evi Turu', url: 'https://ejderturizm.wixsite.com/sitem-1', about: 'Genel seyahat ve tur paketleri tanıtım sitesi.' },
   { id: 'SDB', code: 'SDB', name: 'Son Dakika Biletim', url: 'https://ejderturizm.wixsite.com/sondakikabiletim', about: 'Son dakika bilet fırsatları tanıtım sitesi.' },
   { id: 'YMail', code: 'YMail', name: 'Yandex Mail', url: 'https://mail.yandex.com/', about: 'Kurumsal e-posta sistemi.' },
