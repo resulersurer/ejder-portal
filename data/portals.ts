@@ -219,6 +219,16 @@ export const defaultPortals: Portal[] = [
     about: 'Personel süreçlerini tek merkezde yönetmek için kullanılır.',
   },
   {
+    id: 'IK',
+    code: 'IK',
+    name: 'İnsan Kaynakları',
+    url: 'https://ugurkurtejderturizm28.zohocreatorportal.eu',
+    portalType: 'Private',
+    users: 0,
+    teams: ['İDARİ İŞLER VE İNSAN KAYNAKLARI', 'REKLAM MEDYA EKİBİ'],
+    about: 'İnsan kaynakları süreçlerini yönetmek için kullanılır.',
+  },
+  {
     id: 'SC',
     code: 'SC',
     name: 'Sorun Çözme',
