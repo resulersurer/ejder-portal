@@ -140,15 +140,16 @@ export async function initDb() {
  */
 export async function getPortals(): Promise<Portal[]> {
   if (!sql) {
-    return defaultPortals;
+    return [...defaultPortals].sort((a, b) => a.name.localeCompare(b.name, 'tr'));
   }
   try {
     await initDb();
-    const rows = await sql`SELECT * FROM ejder_portals ORDER BY name ASC;`;
-    return rows.map(mapPortal);
+    const rows = await sql`SELECT * FROM ejder_portals;`;
+    const portals = rows.map(mapPortal);
+    return portals.sort((a, b) => a.name.localeCompare(b.name, 'tr'));
   } catch (error) {
     console.error('Error fetching portals:', error);
-    return defaultPortals;
+    return [...defaultPortals].sort((a, b) => a.name.localeCompare(b.name, 'tr'));
   }
 }
 
@@ -157,15 +158,16 @@ export async function getPortals(): Promise<Portal[]> {
  */
 export async function getWebsites(): Promise<Website[]> {
   if (!sql) {
-    return defaultWebsites;
+    return [...defaultWebsites].sort((a, b) => a.name.localeCompare(b.name, 'tr'));
   }
   try {
     await initDb();
-    const rows = await sql`SELECT * FROM ejder_websites ORDER BY name ASC;`;
-    return rows.map(mapWebsite);
+    const rows = await sql`SELECT * FROM ejder_websites;`;
+    const websites = rows.map(mapWebsite);
+    return websites.sort((a, b) => a.name.localeCompare(b.name, 'tr'));
   } catch (error) {
     console.error('Error fetching websites:', error);
-    return defaultWebsites;
+    return [...defaultWebsites].sort((a, b) => a.name.localeCompare(b.name, 'tr'));
   }
 }
 
@@ -175,16 +177,17 @@ export async function getWebsites(): Promise<Website[]> {
 export async function getTeams(): Promise<string[]> {
   if (!sql) {
     const defaultTeamsSet = new Set(defaultPortals.flatMap((p) => p.teams));
-    return Array.from(defaultTeamsSet).sort();
+    return Array.from(defaultTeamsSet).sort((a, b) => a.localeCompare(b, 'tr'));
   }
   try {
     await initDb();
-    const rows = await sql`SELECT name FROM ejder_teams ORDER BY name ASC;`;
-    return rows.map((r: any) => r.name);
+    const rows = await sql`SELECT name FROM ejder_teams;`;
+    const teamNames = rows.map((r: any) => r.name);
+    return teamNames.sort((a, b) => a.localeCompare(b, 'tr'));
   } catch (error) {
     console.error('Error fetching teams:', error);
     const defaultTeamsSet = new Set(defaultPortals.flatMap((p) => p.teams));
-    return Array.from(defaultTeamsSet).sort();
+    return Array.from(defaultTeamsSet).sort((a, b) => a.localeCompare(b, 'tr'));
   }
 }
 
