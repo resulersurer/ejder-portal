@@ -349,6 +349,16 @@ export const defaultPortals: Portal[] = [
     about: 'Tur programı değişikliklerini takip etmek için kullanılır.',
   },
   {
+    id: 'VT',
+    code: 'VT',
+    name: 'Vize Takip',
+    url: 'https://ugurkurtejderturizm29.zohocreatorportal.eu',
+    portalType: 'Private',
+    users: 0,
+    teams: ['VİZE EKİBİ', 'REKLAM MEDYA EKİBİ'],
+    about: 'Vize süreçlerini ve takibini yönetmek için kullanılır.',
+  },
+  {
     id: 'VRM',
     code: 'VRM',
     name: 'Verimor',
