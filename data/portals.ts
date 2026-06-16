@@ -299,6 +299,16 @@ export const defaultPortals: Portal[] = [
     about: 'EjderTurizm Portal Eğitim Uygulaması.',
   },
   {
+    id: 'EGZ',
+    code: 'EGZ',
+    name: 'Ejder-GuideZone',
+    url: 'https://ugurkurtejderturizm31.zohocreatorportal.eu',
+    portalType: 'Private',
+    users: 0,
+    teams: ['OPERASYON EKİBİ', 'REKLAM MEDYA EKİBİ'],
+    about: 'Rehberlerin operasyonel süreçlerini ve GuideZone sistemini yönetmek için kullanılır.',
+  },
+  {
     id: 'MIT',
     code: 'MIT',
     name: 'Misafir İade Tutanak Oluşturucu',
