@@ -522,7 +522,7 @@ export const defaultPortals: Portal[] = [
     id: 'TP',
     code: 'TP',
     name: 'Tur Projects',
-    url: 'https://ugurkurtejderturizm32.zohocreatorportal.eu',
+    url: 'https://ugurkurtejderturizm33.zohocreatorportal.eu',
     portalType: 'Private',
     users: 0,
     teams: ['OPERASYON EKİBİ', 'SATIŞ EKİBİ', 'REKLAM MEDYA EKİBİ'],
