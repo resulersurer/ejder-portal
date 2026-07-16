@@ -499,6 +499,16 @@ export const defaultPortals: Portal[] = [
     about: 'Bulut tabanlı dosya depolama ve ekip iş birliği platformu.',
   },
   {
+    id: 'ITT',
+    code: 'ITT',
+    name: 'IT Ticket',
+    url: 'https://ugurkurtejderturizm35.zohocreatorportal.eu',
+    portalType: 'Private',
+    users: 0,
+    teams: ['IT EKİBİ'],
+    about: 'IT destek ve ticket süreçlerini yönetmek için kullanılır.',
+  },
+  {
     id: 'TCKT',
     code: 'TCKT',
     name: 'Tur Canlı Konum Takip',
