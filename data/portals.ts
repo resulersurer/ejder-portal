@@ -219,6 +219,16 @@ export const defaultPortals: Portal[] = [
     about: 'Personel süreçlerini tek merkezde yönetmek için kullanılır.',
   },
   {
+    id: 'EPP2',
+    code: 'EPP2',
+    name: 'Ejder Partner Portal',
+    url: 'https://ugurkurtejderturizm32.zohocreatorportal.eu',
+    portalType: 'Private',
+    users: 0,
+    teams: ['SATIŞ EKİBİ', 'REKLAM MEDYA EKİBİ'],
+    about: 'Partner portalı süreçlerini yönetmek için kullanılır.',
+  },
+  {
     id: 'IK',
     code: 'IK',
     name: 'İnsan Kaynakları',
