@@ -309,6 +309,16 @@ export const defaultPortals: Portal[] = [
     about: 'EjderTurizm Portal Eğitim Uygulaması.',
   },
   {
+    id: 'EAS',
+    code: 'EAS',
+    name: 'Ejder Acenta Sözleşme',
+    url: 'https://ejder-acentesozlesme.vercel.app/',
+    portalType: 'Public',
+    users: 0,
+    teams: ['HUKUK EKİBİ', 'SATIŞ EKİBİ', 'REKLAM MEDYA EKİBİ'],
+    about: 'Acenta sözleşmelerini dijital olarak hazırlamak ve takip etmek için kullanılır.',
+  },
+  {
     id: 'EGZ',
     code: 'EGZ',
     name: 'Ejder-GuideZone',
