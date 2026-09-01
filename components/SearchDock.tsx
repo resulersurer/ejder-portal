@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useCallback } from 'react';
-import { debounce } from '@/lib/utils';
+import React, { useEffect, useState } from 'react';
 
 interface SearchDockProps {
   onSearch: (term: string) => void;
@@ -12,17 +11,17 @@ const SearchDock: React.FC<SearchDockProps> = ({ onSearch, visible }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showClear, setShowClear] = useState(false);
 
-  const handleDebouncedSearch = useCallback(
-    debounce((term: string) => {
-      onSearch(term);
-    }, 200),
-    [onSearch]
-  );
+  useEffect(() => {
+    const id = window.setTimeout(() => {
+      onSearch(searchTerm);
+    }, 200);
+
+    return () => window.clearTimeout(id);
+  }, [onSearch, searchTerm]);
 
   const handleInput = (value: string) => {
     setSearchTerm(value);
     setShowClear(value.length > 0);
-    handleDebouncedSearch(value);
   };
 
   const handleClear = () => {

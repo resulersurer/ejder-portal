@@ -1,131 +1,71 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { ViewMode } from '@/types/portal';
 import { getGreeting } from '@/lib/utils';
+import WeatherWidget from './WeatherWidget';
+import ClockWidget from './ClockWidget';
 
 interface TopbarProps {
-  onMenuClick: () => void;
-  modeLabel: string;
+  activeView?: ViewMode;
+  onViewChange?: (view: ViewMode) => void;
+  modeLabel?: string;
 }
 
-interface WeatherData {
-  temp: string;
-  desc: string;
-  icon: string;
-  city: string;
-}
-
-function getWeatherEmoji(desc: string): string {
-  const d = desc.toLowerCase();
-  if (d.includes('sunny') || (d.includes('clear') && !d.includes('night'))) return '☀️';
-  if (d.includes('clear')) return '🌙';
-  if (d.includes('thunder') || d.includes('storm')) return '⛈️';
-  if (d.includes('blizzard') || d.includes('heavy snow')) return '❄️';
-  if (d.includes('snow') || d.includes('sleet')) return '🌨️';
-  if (d.includes('heavy rain') || d.includes('torrential')) return '🌧️';
-  if (d.includes('rain') || d.includes('drizzle') || d.includes('shower')) return '🌦️';
-  if (d.includes('overcast')) return '☁️';
-  if (d.includes('cloudy') || d.includes('cloud')) return '⛅';
-  if (d.includes('mist') || d.includes('fog') || d.includes('haze')) return '🌫️';
-  if (d.includes('wind') || d.includes('breezy')) return '💨';
-  return '🌡️';
-}
-
-const Topbar: React.FC<TopbarProps> = ({ onMenuClick, modeLabel }) => {
+const Topbar: React.FC<TopbarProps> = ({ activeView = 'apps', onViewChange, modeLabel }) => {
   const [greeting, setGreeting] = useState('');
-  const [time, setTime] = useState('');
-  const [date, setDate] = useState('');
-  const [weather, setWeather] = useState<WeatherData | null>(null);
+  const [logoFailed, setLogoFailed] = useState(false);
 
-  // Live clock + greeting — ticks every second
+  // Live greeting
   useEffect(() => {
-    const tick = () => {
-      const now = new Date();
-      setTime(
-        now.toLocaleTimeString('tr-TR', {
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit',
-        })
-      );
-      setDate(
-        now.toLocaleDateString('tr-TR', {
-          weekday: 'long',
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric',
-        })
-      );
+    setGreeting(getGreeting());
+    const id = setInterval(() => {
       setGreeting(getGreeting());
-    };
-    tick();
-    const id = setInterval(tick, 1000);
+    }, 60000);
     return () => clearInterval(id);
   }, []);
 
-  // Weather via wttr.in — free, no API key, auto-detects city by IP
-  useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        const res = await fetch('https://wttr.in/Kagithane,Istanbul?format=j1', {
-          next: { revalidate: 900 },
-        } as RequestInit);
-        if (!res.ok) return;
-        const data = await res.json();
-        const current = data.current_condition?.[0];
-        const tempC = current?.temp_C ?? '--';
-        const desc = current?.weatherDesc?.[0]?.value ?? '';
-        setWeather({ temp: tempC, desc, icon: getWeatherEmoji(desc), city: 'Kağıthane' });
-      } catch {
-        // silently fail — weather is optional
-      }
-    };
-    fetchWeather();
-    const id = setInterval(fetchWeather, 15 * 60 * 1000);
-    return () => clearInterval(id);
-  }, []);
+  const handleNavClick = (view: ViewMode) => {
+    if (onViewChange) {
+      onViewChange(view);
+    }
+  };
 
   return (
     <header className="topbar">
-      {/* Hamburger – mobile only */}
-      <button className="tb-menu" onClick={onMenuClick}>
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        >
-          <line x1="3" y1="6" x2="21" y2="6" />
-          <line x1="3" y1="12" x2="21" y2="12" />
-          <line x1="3" y1="18" x2="21" y2="18" />
-        </svg>
-      </button>
-
-      {/* Left: greeting + title */}
-      <div className="tb-ctx">
-        <div className="tb-greet">{greeting}</div>
-        <div className="tb-title">Portal Yönetim Merkezi</div>
-      </div>
-
-      {/* Right: weather + clock + mode pill */}
-      <div className="tb-right">
-        {/* Weather widget */}
-        {weather && (
-          <div className="tb-weather-pill" title={weather.desc}>
-            <span className="tb-w-icon">{weather.icon}</span>
-            <div className="tb-w-info">
-              <span className="tb-w-temp">{weather.temp}°C</span>
-              {weather.city && (
-                <span className="tb-w-city">{weather.city}</span>
-              )}
-            </div>
+      <div className="topbar-inner">
+        {/* Left: Logo + Brand / Greeting */}
+        <div className="tb-left">
+          <div className="tb-logo">
+            {logoFailed ? (
+              <span>E</span>
+            ) : (
+              <Image
+                src="/assets/img/logo.png"
+                alt="Ejder Turizm"
+                width={48}
+                height={48}
+                onError={() => setLogoFailed(true)}
+                priority
+              />
+            )}
           </div>
-        )}
+          <div className="tb-ctx">
+            <div className="tb-greet">{greeting}</div>
+            <div className="tb-title">Ejder Turizm Portal</div>
+          </div>
+        </div>
 
-        {/* Clock + Date widget */}
-        {time && (
-          <div className="tb-clock-pill">
+        {/* Center: Navigation Bar */}
+        <nav className="tb-nav" aria-label="Ana Navigasyon">
+          {/* Uygulamalar Tab */}
+          <button
+            type="button"
+            className={`tb-nav-btn ${activeView === 'apps' ? 'active' : ''}`}
+            onClick={() => handleNavClick('apps')}
+            title="Uygulamalar"
+          >
             <svg
               viewBox="0 0 24 24"
               fill="none"
@@ -133,22 +73,154 @@ const Topbar: React.FC<TopbarProps> = ({ onMenuClick, modeLabel }) => {
               strokeWidth="1.8"
               strokeLinecap="round"
               strokeLinejoin="round"
-              className="tb-clock-svg"
+              className="tb-nav-svg"
+            >
+              <rect x="3" y="3" width="7" height="7" rx="1.5" />
+              <rect x="14" y="3" width="7" height="7" rx="1.5" />
+              <rect x="3" y="14" width="7" height="7" rx="1.5" />
+              <rect x="14" y="14" width="7" height="7" rx="1.5" />
+            </svg>
+            <span>Uygulamalar</span>
+          </button>
+
+          {/* Web Siteleri Tab */}
+          <button
+            type="button"
+            className={`tb-nav-btn ${activeView === 'websites' ? 'active' : ''}`}
+            onClick={() => handleNavClick('websites')}
+            title="Web Siteleri"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="tb-nav-svg"
             >
               <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
+              <line x1="2" y1="12" x2="22" y2="12" />
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
             </svg>
-            <div className="tb-clock-info">
-              <span className="tb-clock-time">{time}</span>
-              {date && <span className="tb-clock-date">{date}</span>}
-            </div>
-          </div>
-        )}
+            <span>Web Siteleri</span>
+          </button>
 
-        {/* Mode pill */}
-        <div className="mpill">
-          <span className="mdot" />
-          <span>{modeLabel}</span>
+          <span className="tb-nav-sep" aria-hidden="true" />
+
+          {/* Anasayfa (www.ejderturizm.com.tr) */}
+          <a
+            href="https://www.ejderturizm.com.tr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="tb-nav-link"
+            title="Ejder Turizm Ana Sayfası"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="tb-nav-svg"
+            >
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            <span>Anasayfa</span>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="tb-nav-ext"
+            >
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+          </a>
+
+          {/* Backoffice (login.ejderturizm.com.tr) */}
+          <a
+            href="https://login.ejderturizm.com.tr"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="tb-nav-link"
+            title="Ejder Turizm Backoffice Girişi"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="tb-nav-svg"
+            >
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+            </svg>
+            <span>Backoffice</span>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="tb-nav-ext"
+            >
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+          </a>
+
+          {/* Tur Canlı Konum Takip (https://turtakipv2.vercel.app/) */}
+          <a
+            href="https://turtakipv2.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="tb-nav-link tb-nav-link-live"
+            title="Tur Canlı Konum Takip Sistemi"
+          >
+            <span className="tb-live-pulse-dot" />
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="tb-nav-svg"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            <span>Tur Canlı Konum Takip</span>
+            <span className="tb-live-badge">CANLI</span>
+          </a>
+        </nav>
+
+        {/* Right: Weather + Clock Widgets */}
+        <div className="tb-right">
+          {/* Enhanced Weather Widget */}
+          <WeatherWidget />
+
+          {/* Enhanced Clock Widget */}
+          <ClockWidget />
+
+          {/* Mode / Admin indicator if on admin page */}
+          {modeLabel && activeView === 'admin' && (
+            <div className="mpill">
+              <span className="mdot" />
+              <span>{modeLabel}</span>
+            </div>
+          )}
         </div>
       </div>
     </header>

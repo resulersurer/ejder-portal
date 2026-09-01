@@ -1,10 +1,9 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Portal, Website, ViewMode } from '@/types/portal';
 
 // Components
-import Sidebar from '@/components/Sidebar';
 import Topbar from '@/components/Topbar';
 import SearchDock from '@/components/SearchDock';
 import PortalCard from '@/components/PortalCard';
@@ -29,6 +28,10 @@ export default function PortalClient({
 }: PortalClientProps) {
   const [currentView, setCurrentView] = useState<ViewMode>('apps');
   const [currentFilter, setCurrentFilter] = useState('all');
+  const [portalTypeFilter, setPortalTypeFilter] = useState<'all' | 'Private' | 'Public' | 'Restricted'>('all');
+  const [pdfOnly, setPdfOnly] = useState(false);
+  const [favoritesOnly, setFavoritesOnly] = useState(false);
+  const [favoritePortalIds, setFavoritePortalIds] = useState<string[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [portals, setPortals] = useState<Portal[]>(initialPortals);
   const [websites, setWebsites] = useState<Website[]>(initialWebsites);
@@ -37,7 +40,6 @@ export default function PortalClient({
   const [adminPassword, setAdminPassword] = useState('');
   const [pdfViewerOpen, setPdfViewerOpen] = useState(false);
   const [currentPdfPortal, setCurrentPdfPortal] = useState<Portal | null>(null);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Sync state if initial props change
   useEffect(() => {
@@ -60,6 +62,15 @@ export default function PortalClient({
         setIsAuthenticated(true);
       }
 
+      const favorites = localStorage.getItem('ej_favorite_portals');
+      if (favorites) {
+        try {
+          setFavoritePortalIds(JSON.parse(favorites));
+        } catch {
+          setFavoritePortalIds([]);
+        }
+      }
+
       // Parse query parameters
       const params = new URLSearchParams(window.location.search);
       const viewParam = params.get('view');
@@ -76,18 +87,22 @@ export default function PortalClient({
   const handleViewChange = (view: ViewMode) => {
     setCurrentView(view);
     setCurrentFilter('all');
+    setPortalTypeFilter('all');
+    setPdfOnly(false);
+    setFavoritesOnly(false);
     setSearchTerm('');
-    setSidebarOpen(false);
   };
 
-  const handleTeamFilter = (team: string) => {
-    setCurrentFilter(team);
-    setCurrentView('apps');
+  const handleClearFilters = () => {
+    setCurrentFilter('all');
+    setPortalTypeFilter('all');
+    setPdfOnly(false);
+    setFavoritesOnly(false);
   };
 
-  const handleSearch = (term: string) => {
+  const handleSearch = useCallback((term: string) => {
     setSearchTerm(term.toLowerCase().trim());
-  };
+  }, []);
 
   const handleOpenPdf = (portalId: string) => {
     const portal = portals.find((p) => p.id === portalId);
@@ -107,9 +122,24 @@ export default function PortalClient({
     setTeams(updatedTeams);
   };
 
+  const toggleFavorite = (portalId: string) => {
+    setFavoritePortalIds((current) => {
+      const next = current.includes(portalId)
+        ? current.filter((id) => id !== portalId)
+        : [...current, portalId];
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('ej_favorite_portals', JSON.stringify(next));
+      }
+      return next;
+    });
+  };
+
   // Filter portals based on search and team filter
   const filteredPortals = portals.filter((p) => {
     if (currentFilter !== 'all' && !p.teams.includes(currentFilter)) return false;
+    if (portalTypeFilter !== 'all' && p.portalType !== portalTypeFilter) return false;
+    if (pdfOnly && !p.trainingPdf) return false;
+    if (favoritesOnly && !favoritePortalIds.includes(p.id)) return false;
     if (!searchTerm) return true;
     return [p.code, p.name, p.url, p.portalType, p.about || '', ...p.teams]
       .join(' ')
@@ -136,19 +166,15 @@ export default function PortalClient({
   };
 
   return (
-    <div className="ws">
-      {/* Sidebar */}
-      <Sidebar
-        activeView={currentView}
-        onViewChange={handleViewChange}
-        onTeamFilter={handleTeamFilter}
-        teams={teams}
-      />
-
+    <div className="ws ws-no-sidebar">
       {/* Main Content */}
       <div className="wb">
         {/* Topbar */}
-        <Topbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} modeLabel={viewLabels[currentView]} />
+        <Topbar
+          activeView={currentView}
+          onViewChange={handleViewChange}
+          modeLabel={viewLabels[currentView]}
+        />
 
         {/* Main Content Area */}
         <main className="main">
@@ -186,6 +212,49 @@ export default function PortalClient({
           {/* Apps View */}
           {currentView === 'apps' && (
             <div id="appsView">
+              <div className="filters">
+                <button
+                  className={`filter-chip ${currentFilter === 'all' && portalTypeFilter === 'all' && !pdfOnly && !favoritesOnly ? 'active' : ''}`}
+                  onClick={handleClearFilters}
+                >
+                  Tümü
+                </button>
+                <button
+                  className={`filter-chip ${favoritesOnly ? 'active' : ''}`}
+                  onClick={() => setFavoritesOnly((value) => !value)}
+                >
+                  Favoriler
+                </button>
+                <button
+                  className={`filter-chip ${portalTypeFilter === 'Private' ? 'active' : ''}`}
+                  onClick={() => setPortalTypeFilter((value) => (value === 'Private' ? 'all' : 'Private'))}
+                >
+                  Private
+                </button>
+                <button
+                  className={`filter-chip ${portalTypeFilter === 'Public' ? 'active' : ''}`}
+                  onClick={() => setPortalTypeFilter((value) => (value === 'Public' ? 'all' : 'Public'))}
+                >
+                  Public
+                </button>
+                <button
+                  className={`filter-chip ${portalTypeFilter === 'Restricted' ? 'active' : ''}`}
+                  onClick={() => setPortalTypeFilter((value) => (value === 'Restricted' ? 'all' : 'Restricted'))}
+                >
+                  Restricted
+                </button>
+                <button
+                  className={`filter-chip ${pdfOnly ? 'active' : ''}`}
+                  onClick={() => setPdfOnly((value) => !value)}
+                >
+                  Eğitim PDF
+                </button>
+                {currentFilter !== 'all' && (
+                  <button className="filter-chip active" onClick={() => setCurrentFilter('all')}>
+                    {currentFilter}
+                  </button>
+                )}
+              </div>
               <div className="shd">
                 <div className="shd-t">Tüm Uygulamalar</div>
                 <div className="shd-l" />
@@ -208,6 +277,8 @@ export default function PortalClient({
                           portal={portal}
                           isAbout={false}
                           onOpenPdf={handleOpenPdf}
+                          isFavorite={favoritePortalIds.includes(portal.id)}
+                          onToggleFavorite={toggleFavorite}
                         />
                       </div>
                     ))}

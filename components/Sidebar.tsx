@@ -1,30 +1,28 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import Image from 'next/image';
 import { ViewMode } from '@/types/portal';
-import { defaultTeams } from '@/data/teams';
 import { MagneticIcon } from './MagneticIcon';
 
 interface SidebarProps {
   activeView: ViewMode;
   onViewChange: (view: ViewMode) => void;
-  onTeamFilter: (team: string) => void;
-  teams: string[];
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ activeView, onViewChange, onTeamFilter, teams }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const Sidebar: React.FC<SidebarProps> = ({
+  activeView,
+  onViewChange,
+  isOpen,
+  onClose,
+}) => {
   const [logoFailed, setLogoFailed] = useState(false);
 
   const handleViewClick = (view: ViewMode) => {
     onViewChange(view);
-    setIsOpen(false);
-  };
-
-  const handleTeamClick = (team: string) => {
-    onViewChange('apps');
-    onTeamFilter(team);
-    setIsOpen(false);
+    onClose();
   };
 
   return (
@@ -32,7 +30,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, onViewChange, onTeamFilte
       {/* Overlay */}
       <div
         className={`rail-ov ${isOpen ? 'on' : ''}`}
-        onClick={() => setIsOpen(false)}
+        onClick={onClose}
       />
 
       {/* Sidebar */}
@@ -42,16 +40,18 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, onViewChange, onTeamFilte
             {logoFailed ? (
               <span className="rlogo-fb">E</span>
             ) : (
-              <img
+              <Image
                 src="/assets/img/logo.png"
                 alt="E"
+                width={30}
+                height={30}
                 onError={() => setLogoFailed(true)}
               />
             )}
           </div>
           <div className="rb">
             <div className="rb-n">Ejder Turizm</div>
-            <div className="rb-s">Portal Hub</div>
+            <div className="rb-s">İç Portal Merkezi</div>
           </div>
         </div>
 
@@ -80,6 +80,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, onViewChange, onTeamFilte
                 </svg>
               </MagneticIcon>
               <span className="rl">Uygulamalar</span>
+              <span className="ri-meta">Hub</span>
             </button>
             <button
               className={`ri ${activeView === 'websites' ? 'active' : ''}`}
@@ -101,6 +102,7 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, onViewChange, onTeamFilte
                 </svg>
               </MagneticIcon>
               <span className="rl">Web Siteleri</span>
+              <span className="ri-meta">Web</span>
             </button>
             {activeView === 'admin' && (
               <button
@@ -122,30 +124,17 @@ const Sidebar: React.FC<SidebarProps> = ({ activeView, onViewChange, onTeamFilte
                   </svg>
                 </MagneticIcon>
                 <span className="rl">Admin Paneli</span>
+                <span className="ri-meta">Yönetim</span>
               </button>
             )}
           </div>
 
-          {/* Teams Section */}
-          <div className="rsec">
-            <div className="rs">Hızlı Erişim</div>
-            {teams.map((team) => (
-              <button
-                key={team}
-                className="ri"
-                onClick={() => handleTeamClick(team)}
-                title={team}
-              >
-                <MagneticIcon className="ri-ic">
-                  <div className="ri-ic-team-badge">
-                    {team.substring(0, 2)}
-                  </div>
-                </MagneticIcon>
-                <span className="rl">{team}</span>
-              </button>
-            ))}
-          </div>
         </nav>
+
+        <div className="rail-foot">
+          <span className="rail-foot-dot" />
+          <span>Portal erişimi hazır</span>
+        </div>
       </aside>
     </>
   );

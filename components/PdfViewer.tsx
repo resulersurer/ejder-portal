@@ -54,7 +54,14 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ isOpen, portalName, pdfUrl, onClo
           </button>
         </div>
         <div className="pdf-mbody">
-          <iframe id="pdfViewerIframe" className="pdf-iframe" src={pdfUrl} />
+          {isOpen && pdfUrl && (
+            <iframe
+              id="pdfViewerIframe"
+              className="pdf-iframe"
+              src={pdfUrl}
+              title={`${portalName} Eğitim PDF`}
+            />
+          )}
         </div>
       </div>
     </div>

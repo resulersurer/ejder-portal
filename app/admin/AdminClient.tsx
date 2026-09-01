@@ -5,7 +5,6 @@ import { Portal, Website, ViewMode } from '@/types/portal';
 import { useRouter } from 'next/navigation';
 
 // Components
-import Sidebar from '@/components/Sidebar';
 import Topbar from '@/components/Topbar';
 import AdminPanel from '@/components/AdminPanel';
 import Toast, { showToast } from '@/components/Toast';
@@ -30,7 +29,6 @@ export default function AdminClient({
   const [teams, setTeams] = useState<string[]>(initialTeams);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [adminPassword, setAdminPassword] = useState('');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   // Sync state if initial props change
   useEffect(() => {
@@ -81,10 +79,6 @@ export default function AdminClient({
     }
   };
 
-  const handleTeamFilter = (team: string) => {
-    router.push(`/?team=${encodeURIComponent(team)}`);
-  };
-
   const handleUpdate = (
     updatedPortals: Portal[],
     updatedWebsites: Website[],
@@ -96,19 +90,15 @@ export default function AdminClient({
   };
 
   return (
-    <div className="ws">
-      {/* Sidebar */}
-      <Sidebar
-        activeView="admin"
-        onViewChange={handleViewChange}
-        onTeamFilter={handleTeamFilter}
-        teams={teams}
-      />
-
+    <div className="ws ws-no-sidebar">
       {/* Main Content */}
       <div className="wb">
         {/* Topbar */}
-        <Topbar onMenuClick={() => setSidebarOpen(!sidebarOpen)} modeLabel="Admin Paneli" />
+        <Topbar
+          activeView="admin"
+          onViewChange={handleViewChange}
+          modeLabel="Admin Paneli"
+        />
 
         {/* Main Content Area */}
         <main className="main" style={{ minHeight: 'calc(100vh - var(--bar))', position: 'relative' }}>
