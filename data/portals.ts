@@ -299,16 +299,6 @@ export const defaultPortals: Portal[] = [
     about: 'Yolcu sözleşmeleri ve sigorta işlemlerinin yönetildiği sistem.',
   },
   {
-    id: 'EA',
-    code: 'EA',
-    name: 'Ejder Akademi',
-    url: 'https://ejderakademi.com',
-    portalType: 'Private',
-    users: 0,
-    teams: ALL_TEAMS,
-    about: 'EjderTurizm Portal Eğitim Uygulaması.',
-  },
-  {
     id: 'EAS',
     code: 'EAS',
     name: 'Ejder Acenta Sözleşme',
