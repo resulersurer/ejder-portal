@@ -89,6 +89,14 @@ export async function initDb() {
       );
     `;
 
+    // Track one-time data migrations for existing installations.
+    await sql`
+      CREATE TABLE IF NOT EXISTS ejder_data_migrations (
+        id VARCHAR(100) PRIMARY KEY,
+        applied_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+      );
+    `;
+
     // 4. Auto-seed Teams
     const teamsCountResult = await sql`SELECT COUNT(*)::integer as count FROM ejder_teams;`;
     const teamsCount = teamsCountResult[0]?.count || 0;
@@ -115,6 +123,37 @@ export async function initDb() {
           ON CONFLICT DO NOTHING;
         `;
       }
+    }
+
+    // Add Birim Ödeme Takip to databases that were seeded before it was introduced.
+    const birimOdemeMigrationId = '2026-09-30-add-birim-odeme-takip';
+    const birimOdemeMigration = await sql`
+      SELECT 1 FROM ejder_data_migrations WHERE id = ${birimOdemeMigrationId};
+    `;
+    if (birimOdemeMigration.length === 0) {
+      const birimOdemePortal = defaultPortals.find((p) => p.id === 'BOTU');
+      if (birimOdemePortal) {
+        await sql`
+          INSERT INTO ejder_portals (id, code, name, url, portal_type, users, teams, about, training_pdf)
+          VALUES (
+            ${birimOdemePortal.id},
+            ${birimOdemePortal.code},
+            ${birimOdemePortal.name},
+            ${birimOdemePortal.url},
+            ${birimOdemePortal.portalType},
+            ${birimOdemePortal.users},
+            ${birimOdemePortal.teams},
+            ${birimOdemePortal.about},
+            ${birimOdemePortal.trainingPdf || null}
+          )
+          ON CONFLICT DO NOTHING;
+        `;
+      }
+      await sql`
+        INSERT INTO ejder_data_migrations (id)
+        VALUES (${birimOdemeMigrationId})
+        ON CONFLICT DO NOTHING;
+      `;
     }
 
     // 6. Auto-seed Websites

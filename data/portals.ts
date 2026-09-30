@@ -49,6 +49,16 @@ export const defaultPortals: Portal[] = [
     about: 'Banka hesaplarının güncel durumunu izlemek için kullanılır.',
   },
   {
+    id: 'BOTU',
+    code: 'BOTU',
+    name: 'Birim Ödeme Takip',
+    url: 'https://ejderturizm-birim.zohocreatorportal.eu',
+    portalType: 'Private',
+    users: 0,
+    teams: ['COST CONTROL EKİBİ', 'MUHASEBE EKİBİ', 'REKLAM MEDYA EKİBİ'],
+    about: 'Birim bazlı ödeme süreçlerini takip etmek için kullanılır.',
+  },
+  {
     id: 'BK',
     code: 'BK',
     name: 'Bilet Kontrol',
